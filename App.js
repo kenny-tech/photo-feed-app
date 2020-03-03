@@ -10,20 +10,22 @@ import UploadScreen from './app/screens/Upload';
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
+const MyTabs = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Feed" component={FeedScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Upload" component={UploadScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>  
   );
 }
 
-export default function App() {
+const App = () => {
   return (
     <NavigationContainer>
       <MyTabs />
     </NavigationContainer>
   );
 }
+
+export default App;
