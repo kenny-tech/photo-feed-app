@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, Image } from 'react-native';
-// import { f, auth, database, storage } from '../../config/config';
 
 class Profile extends React.Component {
     constructor(props) {
