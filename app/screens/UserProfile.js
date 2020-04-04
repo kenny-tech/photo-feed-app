@@ -1,12 +1,35 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, StyleSheet, Text, View, Image } from 'react-native';
+import { TouchableOpacity, Alert, StyleSheet, Text, View, Image } from 'react-native';
 
 class UserProfile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            loggedIn: false
+            loaded: false,
+            login: false
         }
+    }
+    
+
+    checkParams = () => {
+        // var params = this.props.navigation.state.userId
+        // // Alert.alert(user_id);
+        // if(params) {
+        //     if(params.userId) {
+        //         this.setState({
+        //             userId: params.userId
+        //         });
+        //         this.fetchUserInfo(params.userId);
+        //     }
+        // }
+    }
+
+    fetchUserInfo = (userId) => {
+        Alert.alert(userId)
+    }
+
+    componentDidMount = () => {
+        this.checkParams()
     }
 
     handleLogin = () => {
@@ -20,50 +43,42 @@ class UserProfile extends React.Component {
     }
 
     render() {
+        const { loaded } = this.state;
+
         return (
-            <View style={styles.container}>
-                {
-                    this.state.loggedin == true ? 
-                    (
-                        <View style={{flex: 1}}>
-                            <View style={styles.profileView}>
-                                <Text>Profile</Text>
-                            </View>
-                            <View style={styles.profileImageTopView}>
-                                <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>
-                                <View style={{marginRight: 5}}>
-                                    <Text>Name</Text>
-                                    <Text>@username</Text>
-                                </View>
-                                <View style={styles.buttonView}>
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText}>Logout</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText}>Edit Profile</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity 
-                                        onPress={() => this.props.navigation.navigate('Upload')}
-                                        style={styles.buttonUpload}>
-                                        <Text style={styles.textUpload}>Upload New +</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            <View style={styles.loadPhotosView}>
-                                <Text>Loading photos...</Text>
-                            </View>
-                        </View>
-                    ): (
-                    <View style={styles.loginView}>
-                        <Text>You are not logged in </Text>
-                        <TouchableOpacity>
-                            <Text onPress={() => this.handleLogin()}>Please login to view profile </Text>
+           
+            <View style={styles.container}>     
+                <View style={{flex: 1}}>
+                    <View style={styles.profileView}>
+                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                            <Text style={{fontSize:12, fontWeight: "bold", paddingLeft: 10}}>Go Back</Text>
                         </TouchableOpacity>
+                        <Text>User Profile</Text>
+                        <Text>Hello</Text>
                     </View>
-                    )
-                }
-            </View>
-        )
+                    <View style={styles.profileImageTopView}>
+                        <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>
+                        <View style={{marginRight: 5}}>
+                            <Text>Name</Text>
+                            <Text>@username</Text>
+                        </View>
+                        <View style={styles.buttonView}>
+                            <TouchableOpacity style={styles.button}>
+                                <Text style={styles.buttonText}>Logout</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.button}>
+                                <Text style={styles.buttonText}>Edit Profile</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                onPress={() => this.props.navigation.navigate('Upload')}
+                                style={styles.buttonUpload}>
+                                <Text style={styles.textUpload}>Upload New +</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>   
+        )   
     }
 };
 
@@ -81,7 +96,9 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         backgroundColor: 'white',
         borderColor: 'lightgrey',
-        alignItems: 'center'
+        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "space-between"
     },
     profileImageTopView: {
         flex: 1,

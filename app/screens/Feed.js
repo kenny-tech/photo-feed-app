@@ -1,25 +1,52 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, FlatList, StyleSheet, Text, View, Image } from 'react-native';
 
-const Feed = () => {
-    
-    return (
-        <View style={styles.container}>
-            <View style={styles.feedView}>
-                <Text>Feed</Text>
+class Feed extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            loggedIn: false,
+            user: {
+                id: 1,
+                name: 'Kenny'
+            }
+        }
+    }
+
+    handleLogin = () => {
+        try {
+            this.setState({
+                loggedin: true
+            })
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    render() {
+
+        const { user } = this.state;
+
+        return (
+            <View style={styles.container}>
+                <View style={styles.feedView}>
+                    <Text>Feed</Text>
+                </View>
+                <View>
+                    <Text>23 days ago</Text>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('User', {userId: this.state.user.id})}>
+                        <Text style={{textAlign: 'right'}}>@{user.name}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.photoView}>
+                    <Text>Loading photos...</Text>
+                </View>
             </View>
-            <View>
-                <Text>23 days ago</Text>
-                <Text style={{textAlign: 'right'}}>@exampleUser</Text>
-            </View>
-            <View style={styles.photoView}>
-                <Text>Loading photos...</Text>
-            </View>
-        </View>
-    )
-    
+        )
+    }
 };
-
+ 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
