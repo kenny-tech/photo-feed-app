@@ -24,10 +24,10 @@ class Comments extends React.Component {
             <View style={styles.container}>
                 {
                     this.state.loggedin == true ? 
-                    (<Text>Upload</Text>): (
+                    (<Text>Comments</Text>): (
                     <View>
                         <Text>You are not logged in </Text>
-                        <Text onPress={() => this.handleLogin()}>Please login to upload photo </Text>
+                        <Text onPress={() => this.handleLogin()}>Please login to post a comment </Text>
                     </View>
                     )
                 }

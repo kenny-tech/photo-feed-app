@@ -54,7 +54,6 @@ class UserProfile extends React.Component {
                             <Text style={{fontSize:12, fontWeight: "bold", paddingLeft: 10}}>Go Back</Text>
                         </TouchableOpacity>
                         <Text>User Profile</Text>
-                        <Text>Hello</Text>
                     </View>
                     <View style={styles.profileImageTopView}>
                         <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>

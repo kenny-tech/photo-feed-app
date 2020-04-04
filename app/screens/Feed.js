@@ -42,6 +42,10 @@ class Feed extends React.Component {
                 <View style={styles.photoView}>
                     <Text>Loading photos...</Text>
                 </View>
+                <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate('Comments', {userId: 5})}>
+                    <Text style={{color: 'blue', marginTop: 10, textAlign: 'center'}}>[ View comments ]</Text>
+                </TouchableOpacity>
             </View>
         )
     }
