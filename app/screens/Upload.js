@@ -45,7 +45,7 @@ class Upload extends React.Component {
     findNewImage = () => {
         // this._checkPermissions();
         ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
+            // console.log('Response = ', response);
           
             if (response.didCancel) {
               console.log('User cancelled image picker');
@@ -61,9 +61,14 @@ class Upload extends React.Component {
               this.setState({
                 avatarSource: source,
               });
-              console.log('Uploaded image: ',this.state.avatarSource);
+            //   console.log('Uploaded image: ',this.state.avatarSource);
+              this.uploadImage(this.state.avatarSource);
             }
           });
+    }
+
+    uploadImage = (image) => {
+        console.log('Uploaded Image: ',image)
     }
 
     render() {
