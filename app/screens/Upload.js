@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ActivityIndicator } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 const options = {
@@ -16,7 +16,9 @@ class Upload extends React.Component {
         this.state = {
             loggedin: false,
             imageId: this.uniqueId(),
-            avatarSource: ''
+            imageSource: '',
+            uploading: true,
+            progres: 50
         }
     }    
 
@@ -68,15 +70,15 @@ class Upload extends React.Component {
               // const source = { uri: 'data:image/jpeg;base64,' + response.data };
           
               this.setState({
-                avatarSource: source,
+                imageSource: source,
                 imageSelected: true,
                 imageId: this.uniqueId(),
                 uri: response.uri
               });
-              let image = this.state.avatarSource;
+              let image = this.state.imageSource;
 
-              // console.log('Uploaded image: ',this.state.avatarSource);
-              this.uploadImage(this.state.avatarSource);
+              // console.log('Uploaded image: ',this.state.imageSource);
+              this.uploadImage(this.state.imageSource);
             }
           });
     }
@@ -87,7 +89,7 @@ class Upload extends React.Component {
     }
 
     render() {
-        const { loggedin, imageSelected } = this.state;
+        const { loggedin, imageSelected, uploading, progress } = this.state;
         
         return (
             <View style={styles.container}>
@@ -96,10 +98,10 @@ class Upload extends React.Component {
                     (
                     <View style={styles.container}>
                         { imageSelected ? (<View style={{flex: 1}}><View>
-                            <Text style={{fontSize: 28, paddingBottom: 15}}>Upload</Text>
+                            <Text style={{fontSize: 28, paddingBottom: 15, alignItems: "center"}}>Upload</Text>
                         </View>
-                        <View>
-                            <Text style={{margin: 5}}>Caption: </Text>
+                        <View style={{marginHorizontal: 20, paddingHorizontal: 30}}> 
+                            <Text style={{margin: 5, textAlign: 'center'}}>Caption: </Text>
                             <TextInput
                                 editable={true}
                                 placeholder={'Enter your caption...'}
@@ -109,6 +111,29 @@ class Upload extends React.Component {
                                 onChangeText={(text) => this.setState({caption: text})}
                                 style={{marginVertical:10, height:100, width: 300, padding:5, boderColor: 'grey', borderWidth: 1, borderRadius:3, backgroundColor:'white', color:'black'}}
                             />
+                            <TouchableOpacity
+                            onPress={ () => this.uploadPublish() }
+                            style={{alignSelf: 'center', width: 170, marginHorizontal: 'auto', backgroundColor: 'purple', borderRadius: 5, paddingVertical: 10, paddingHorizontal: 20}}>
+                                <Text style={{textAlign: 'center', color: 'white'}}>Upload & Publish</Text>
+                            </TouchableOpacity>
+                            {
+                                uploading ? (
+                                    <View style={{marginTop: 10}}>
+                                        <Text>{progress}%</Text>
+                                        {
+                                            progress != 100 ? (
+                                                <ActivityIndicator size="small" color="blue"/>
+                                            ) : (
+                                                <Text>Processing</Text>
+                                            )
+                                        }
+
+                                    </View>
+                                ) : (
+                                    <View></View>
+                                )
+                            }
+                            <Image source={this.state.imageSource} style={{marginTop: 10, resizeMode:'cover', width: 500, height: 300}}/>
                             </View>
                         </View>) : (<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize: 28, paddingBottom: 15}}>Upload</Text>
                         <TouchableOpacity
@@ -116,7 +141,10 @@ class Upload extends React.Component {
                         onPress={() => this.findNewImage()}>
                             <Text style={{color: 'white'}}>Select Photo</Text>
                         </TouchableOpacity>
-                        <Image source={this.state.avatarSource} style={{width: 500, height: 300}}/></View>)}
+                        <Image 
+                            source={this.state.imageSource} 
+                            style={{resizeMode: 'cover', width: '100%', height: 275}}
+                            /></View>)}
                     </View>): (
                     <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
                         <Text>You are not logged in </Text>
@@ -132,8 +160,6 @@ class Upload extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent:'center', 
-        alignItems:'center'
     }
 })
 
