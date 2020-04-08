@@ -98,7 +98,7 @@ class Upload extends React.Component {
                     (
                     <View style={styles.container}>
                         { imageSelected ? (<View style={{flex: 1}}><View>
-                            <Text style={{fontSize: 28, paddingBottom: 15, alignItems: "center"}}>Upload</Text>
+                            <Text style={{fontSize: 28, paddingBottom: 15, textAlign: 'center'}}>Upload</Text>
                         </View>
                         <View style={{marginHorizontal: 20, paddingHorizontal: 30}}> 
                             <Text style={{margin: 5, textAlign: 'center'}}>Caption: </Text>
@@ -119,7 +119,7 @@ class Upload extends React.Component {
                             {
                                 uploading ? (
                                     <View style={{marginTop: 10}}>
-                                        <Text>{progress}%</Text>
+                                        <Text>{progress}</Text>
                                         {
                                             progress != 100 ? (
                                                 <ActivityIndicator size="small" color="blue"/>
@@ -133,7 +133,7 @@ class Upload extends React.Component {
                                     <View></View>
                                 )
                             }
-                            <Image source={this.state.imageSource} style={{marginTop: 10, resizeMode:'cover', width: 500, height: 300}}/>
+                            <Image source={this.state.imageSource} style={{marginTop: 10, resizeMode:'cover', width: 300, height: 300}}/>
                             </View>
                         </View>) : (<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize: 28, paddingBottom: 15}}>Upload</Text>
                         <TouchableOpacity
