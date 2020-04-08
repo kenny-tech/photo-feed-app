@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ActivityIndicator, Alert } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 const options = {
@@ -18,7 +18,7 @@ class Upload extends React.Component {
             imageId: this.uniqueId(),
             imageSource: '',
             uploading: true,
-            progres: 50
+            progress: 50
         }
     }    
 
@@ -88,6 +88,15 @@ class Upload extends React.Component {
         console.log('Uploaded Image: ',image)
     }
 
+    uploadPublish = () => {
+        // upload and publish to the server
+        this.state = {
+            progress: 100,
+            uploading: false
+        }
+        Alert.alert('Upload and publish in progress...');
+    }
+
     render() {
         const { loggedin, imageSelected, uploading, progress } = this.state;
         
@@ -119,7 +128,7 @@ class Upload extends React.Component {
                             {
                                 uploading ? (
                                     <View style={{marginTop: 10}}>
-                                        <Text>{progress}</Text>
+                                        <Text>{progress}%</Text>
                                         {
                                             progress != 100 ? (
                                                 <ActivityIndicator size="small" color="blue"/>
