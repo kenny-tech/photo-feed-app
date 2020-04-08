@@ -18,7 +18,8 @@ class Upload extends React.Component {
             imageId: this.uniqueId(),
             imageSource: '',
             uploading: true,
-            progress: 50
+            progress: 50,
+            caption: ''
         }
     }    
 
@@ -76,25 +77,27 @@ class Upload extends React.Component {
                 uri: response.uri
               });
               let image = this.state.imageSource;
-
               // console.log('Uploaded image: ',this.state.imageSource);
-              this.uploadImage(this.state.imageSource);
             }
           });
     }
 
     uploadImage = (image) => {
         // upload image to server
-        console.log('Uploaded Image: ',image)
+        this.setState({
+            uploading: true
+        })
+        Alert.alert('Uploading image to the server...')
     }
 
     uploadPublish = () => {
-        // upload and publish to the server
-        this.state = {
-            progress: 100,
-            uploading: false
-        }
-        Alert.alert('Upload and publish in progress...');
+        if(this.state.caption !== '') {
+            // upload and publish to the server
+            this.uploadImage(this.state.imageSource);
+            // Alert.alert('Upload and publish in progress...');
+        } else {
+            Alert.alert('Please enter a caption...');
+        }     
     }
 
     render() {
