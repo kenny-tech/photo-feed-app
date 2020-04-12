@@ -2,6 +2,8 @@ import React, { useImperativeHandle } from 'react';
 import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
+import UserAuth from '../components/Auth'
+
 class Comment extends React.Component {
     constructor(props) {
         super(props)
@@ -147,10 +149,7 @@ class Comment extends React.Component {
                              </View>
                         </KeyboardAvoidingView>
                     ): (
-                    <View>
-                        <Text>You are not logged in </Text>
-                        <Text onPress={() => this.handleLogin()}>Please login to post a comment </Text>
-                    </View>
+                        <UserAuth message={'Please login to upload your photo'}/>
                     )
                 }
             </View>
