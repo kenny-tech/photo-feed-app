@@ -13,18 +13,7 @@ class Feed extends React.Component {
         }
     }
 
-    handleLogin = () => {
-        try {
-            this.setState({
-                loggedin: true
-            })
-        }catch(error){
-            console.log(error)
-        }
-    }
-
     render() {
-
         const { user } = this.state;
 
         return (
