@@ -82,12 +82,42 @@ class Upload extends React.Component {
           });
     }
 
-    uploadImage = (image) => {
+    uploadImage = (imageUrl) => {
         // upload image to server
         this.setState({
             uploading: true
         })
-        Alert.alert('Uploading image to the server...')
+        this.processUpload(imageUrl)
+        // Alert.alert('Uploading image to the server...')
+    }
+
+    processUpload = (imageUrl) => {
+        let userId = 1;
+        let caption = this.state.caption;
+        let dateTime = Date.now();
+        let timestamp = Math.floor(dateTime / 1000);
+
+        var photoObj = {
+            author: userId,
+            caption: caption,
+            posted: timestamp,
+            url, imageUrl
+        };
+        
+        // update database
+        // add to main feed
+
+        // set user photos object
+
+        Alert.alert('Image Uploaded!!');
+
+        this.setState({
+            uploading: false,
+            imageSelected: false,
+            caption: '',
+            uri: ''
+        });
+
     }
 
     uploadPublish = () => {

@@ -9,7 +9,7 @@ import FeedScreen from './app/screens/Feed';
 import ProfileScreen from './app/screens/Profile';
 import UploadScreen from './app/screens/Upload';
 import UserProfile from './app/screens/UserProfile';
-import Comments from './app/screens/Comments';
+import Comment from './app/screens/Comment';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +30,7 @@ const MainStack = () => {
     <Stack.Navigator initialRouteName="Home" mode="modal" headerMode="none">
       <Stack.Screen name="Home" component={TabStack} />
       <Stack.Screen name="User" component={UserProfile} />
-      <Stack.Screen name="Comments" component={Comments} />
+      <Stack.Screen name="Comment" component={Comment} />
     </Stack.Navigator>
   );
 }
