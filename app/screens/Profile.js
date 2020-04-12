@@ -1,12 +1,42 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, StyleSheet, Text, View, Image } from 'react-native';
+import { TouchableOpacity, TextInput, StyleSheet, Text, View, Image, Alert } from 'react-native';
+import { database } from 'firebase';
 
 class Profile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            loggedIn: false
+            loggedIn: false,
+            editingProfile: false,
+            name: 'John',
+            username: 'john'
         }
+    }
+
+    fetchUserInfo = (userId) => {
+        // fetch user info from db
+
+        // if user info exists, set it in state
+        // if(exists) {
+        //     this.setState({
+        //         username: data.username,
+        //         name: data.name,
+        //         loggedin: true,
+        //         userId: userId
+        //     })
+        // }
+    }
+
+    componentDidMount = () => {
+        // get user
+
+        // if(user) {
+        //     this.fetchUserInfo(user.uid)
+        // } else {
+        //     this.setState({
+        //         loggedin: false
+        //     })
+        // }
     }
 
     handleLogin = () => {
@@ -16,6 +46,28 @@ class Profile extends React.Component {
             })
         }catch(error){
             console.log(error)
+        }
+    }
+
+    logout = () => {
+        Alert.alert('Logged out');
+    }
+
+    editProfile = () => {
+        this.setState({editingProfile: true})
+    }
+
+    saveProfile = () => {
+        let name = this.state.name;
+        let username = this.state.username;
+
+        if(name !== '' && username != '')
+        {
+            // Save profile to database
+            Alert.alert('Profile successfully updated');
+            this.setState({
+                editingProfile: false
+            })
         }
     }
 
@@ -29,17 +81,43 @@ class Profile extends React.Component {
                             <View style={styles.profileView}>
                                 <Text>Profile</Text>
                             </View>
+                            <View style={{marginHorizontal: 60, marginVertical: 40}}>
+                                <Text>{this.state.name}</Text>
+                                <Text>@{this.state.username}</Text>
+                            </View>  
                             <View style={styles.profileImageTopView}>
-                                <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>
-                                <View style={{marginRight: 5}}>
-                                    <Text>Name</Text>
-                                    <Text>@username</Text>
-                                </View>
-                                <View style={styles.buttonView}>
-                                    <TouchableOpacity style={styles.button}>
+                                {this.state.editingProfile == true ? (
+                                <View style={{alignItems: 'center', justifyContent: 'center', paddingBottom: 20, borderBottomWidth: 1, marginLeft: 50}}>
+                                    <Text>Editing</Text>
+                                    <TouchableOpacity onPress={() => this.setState({editingProfile: false})}>
+                                        <Text style={{fontWeight: 'bold'}}>Cancel Editing</Text>
+                                    </TouchableOpacity>
+                                    <Text>Name:</Text>
+                                    <TextInput
+                                        editable={true}
+                                        placeholder={'Enter your name'}
+                                        onChangeText={(text) => this.setState({name: text})}
+                                        value={this.state.name}
+                                        style={{width: 200, marginVertical: 10, padding: 5, borderColor: 'grey', borderWidth: 1}}
+                                    />
+                                    <Text>Username:</Text>
+                                    <TextInput
+                                        editable={true}
+                                        placeholder={'Enter your username'}
+                                        onChangeText={(text) => this.setState({username: text})}
+                                        value={this.state.username}
+                                        style={{width: 200, marginVertical: 10, padding: 5, borderColor: 'grey', borderWidth: 1}}
+                                    />
+                                    <TouchableOpacity 
+                                        style={{backgroundColor: 'blue', padding: 10}}
+                                        onPress={() => this.saveProfile()}>
+                                        <Text style={{fontWeight: 'bold', color: 'white'}}>Save Changes</Text>
+                                    </TouchableOpacity>
+                                </View>) : (<View style={styles.buttonView}>   
+                                    <TouchableOpacity style={styles.button} onPress={() => this.logout()}>
                                         <Text style={styles.buttonText}>Logout</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.button}>
+                                    <TouchableOpacity style={styles.button} onPress={() => this.editProfile()}>
                                         <Text style={styles.buttonText}>Edit Profile</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity 
@@ -47,7 +125,9 @@ class Profile extends React.Component {
                                         style={styles.buttonUpload}>
                                         <Text style={styles.textUpload}>Upload New +</Text>
                                     </TouchableOpacity>
-                                </View>
+                                </View>)}
+                                <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>
+                                                           
                             </View>
                             <View style={styles.loadPhotosView}>
                                 <Text>Loading photos...</Text>
@@ -94,7 +174,7 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     profileImage: {
-        marginLeft: 10,
+        marginHorizontal: 20,
         width: 100,
         height: 100,
         borderRadius: 50
