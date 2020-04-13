@@ -15,7 +15,15 @@ class Auth extends React.Component {
     }
 
     componentDidMount = () => {
-        
+
+    }
+
+    showLogin = () => {
+        this.setState({authStep: 1})
+    }
+
+    showSignup = () => {
+        this.setState({authStep: 2})
     }
 
     login = () => {
@@ -23,12 +31,15 @@ class Auth extends React.Component {
         let pass = this.state.pass;
 
         if(email!='' & pass!='') {
-            try {
+            try { 
                 this.setState({
                     loggedin: true,
                     email: email,
                     pass: pass
                 });
+                this.props.navigation.navigate('Upload');
+                // this.props.navigation.navigate(this.props.page);
+                // console.log('Page: ',this.props.page);
                 Alert.alert('Login successful')
             }catch(error){
                 console.log(error);
@@ -68,11 +79,11 @@ class Auth extends React.Component {
                 {
                     this.state.authStep == 0 ? (
                         <View style={{marginVertical: 20, flexDirection: 'row'}}>
-                            <TouchableOpacity onPress={() => this.setState({authStep: 1})}>
+                            <TouchableOpacity onPress={() => this.showLogin()}>
                                 <Text style={{fontWeight: 'bold', color: 'green'}}>Login</Text>
                             </TouchableOpacity>
                             <Text style={{marginHorizontal: 10}}>or</Text>
-                            <TouchableOpacity onPress={() => this.setState({authStep: 2})}>
+                            <TouchableOpacity onPress={() => this.showSignup()}>
                                 <Text style={{fontWeight: 'bold', color: 'blue'}}>Sign Up</Text>
                             </TouchableOpacity>
                         </View>

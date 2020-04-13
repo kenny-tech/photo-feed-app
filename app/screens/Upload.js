@@ -190,7 +190,7 @@ class Upload extends React.Component {
                             style={{resizeMode: 'cover', width: '100%', height: 275}}
                             /></View>)}
                     </View>): (
-                        <UserAuth message={'Please login to upload your photo'} />
+                        <UserAuth message={'Please login to upload your photo'} moveScreen={true} page={'Upload'} navigation={this.props.navigation}/>
                     )
                 }
             </View>
