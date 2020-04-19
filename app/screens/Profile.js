@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, TextInput, StyleSheet, Text, View, Image, Alert } from 'react-native';
-import { database } from 'firebase';
+import UserAuth from '../components/Auth'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -134,12 +134,7 @@ class Profile extends React.Component {
                             </View>
                         </View>
                     ): (
-                    <View style={styles.loginView}>
-                        <Text>You are not logged in </Text>
-                        <TouchableOpacity>
-                            <Text onPress={() => this.handleLogin()}>Please login to view profile </Text>
-                        </TouchableOpacity>
-                    </View>
+                        <UserAuth message={'Please login to view your profile'}/>
                     )
                 }
             </View>

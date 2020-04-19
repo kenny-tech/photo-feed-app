@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ActivityIndicator, Alert } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
+import UserAuth from '../components/Auth'
+
 const options = {
     title: 'Select Avatar',
     storageOptions: {
@@ -188,10 +190,7 @@ class Upload extends React.Component {
                             style={{resizeMode: 'cover', width: '100%', height: 275}}
                             /></View>)}
                     </View>): (
-                    <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-                        <Text>You are not logged in </Text>
-                        <Text onPress={() => this.handleLogin()}>Please login to upload photo </Text>
-                    </View>
+                        <UserAuth message={'Please login to upload your photo'} moveScreen={true} page={'Upload'} navigation={this.props.navigation}/>
                     )
                 }
             </View>
