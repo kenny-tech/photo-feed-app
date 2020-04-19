@@ -1,6 +1,5 @@
-import React, { useImperativeHandle } from 'react';
+import React from 'react';
 import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 
 class Auth extends React.Component {
     constructor(props) {
