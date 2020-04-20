@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ActivityIndicator, Alert } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+import { connect } from 'react-redux'
 
+import ImagePicker from 'react-native-image-picker';
 import UserAuth from '../components/Auth'
 
 const options = {
@@ -138,7 +139,7 @@ class Upload extends React.Component {
         return (
             <View style={styles.container}>
                 {
-                    loggedin ? 
+                    this.props.isLoggedIn ? 
                     (
                     <View style={styles.container}>
                         { imageSelected ? (<View style={{flex: 1}}><View>
@@ -190,7 +191,7 @@ class Upload extends React.Component {
                             style={{resizeMode: 'cover', width: '100%', height: 275}}
                             /></View>)}
                     </View>): (
-                        <UserAuth message={'Please login to upload your photo'} moveScreen={true} page={'Upload'} navigation={this.props.navigation}/>
+                        <UserAuth message={'Please login to upload your photo'} />
                     )
                 }
             </View>
@@ -204,5 +205,11 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Upload;
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: state.auth.isLoggedIn,
+    };
+};
+
+export default connect(mapStateToProps, null)(Upload);
 
