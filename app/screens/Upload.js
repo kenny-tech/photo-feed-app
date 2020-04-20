@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, ActivityIndicator, Alert } from 'react-native';
+import { connect } from 'react-redux'
+
 import ImagePicker from 'react-native-image-picker';
 
 import UserAuth from '../components/Auth'
@@ -138,7 +140,7 @@ class Upload extends React.Component {
         return (
             <View style={styles.container}>
                 {
-                    loggedin ? 
+                    this.props.isLoggedIn ? 
                     (
                     <View style={styles.container}>
                         { imageSelected ? (<View style={{flex: 1}}><View>
@@ -204,5 +206,11 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Upload;
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: state.auth.isLoggedIn,
+    };
+};
+
+export default connect(mapStateToProps, null)(Upload);
 

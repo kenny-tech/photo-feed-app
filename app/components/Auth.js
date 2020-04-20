@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native';
+
+import { login } from '../actions/auth';
 
 class Auth extends React.Component {
     constructor(props) {
@@ -25,24 +28,24 @@ class Auth extends React.Component {
         this.setState({authStep: 2})
     }
 
-    login = () => {
+    handleLogin = () => {
         let email =this.state.email;
         let pass = this.state.pass;
 
         if(email!='' & pass!='') {
             try { 
-                this.setState({
-                    loggedin: true,
-                    email: email,
-                    pass: pass
-                });
-                this.props.navigation.navigate('Upload');
+                this.props.login(email,pass);
+                // this.setState({
+                //     loggedin: true,
+                //     email: email,
+                //     pass: pass
+                // });
+                // this.props.navigation.navigate('Upload');
                 // this.props.navigation.navigate(this.props.page);
                 // console.log('Page: ',this.props.page);
-                Alert.alert('Login successful')
+                // Alert.alert('Login successful')
             }catch(error){
                 console.log(error);
-                Alert.alert(error);
             }
         }else{
             Alert.alert('Email or password is empty');
@@ -117,7 +120,7 @@ class Auth extends React.Component {
                                 />
                                 <TouchableOpacity
                                     style={{backgroundColor: 'green', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5}}
-                                    onPress={() => this.login()}
+                                    onPress={() => this.handleLogin()}
                                 >
                                     <Text style={{color: 'white'}}>Login</Text>
                                 </TouchableOpacity>
@@ -173,5 +176,11 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Auth;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: (email, pass) => { dispatch(login(email, pass))},
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Auth);
 
