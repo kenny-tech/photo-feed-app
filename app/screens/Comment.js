@@ -1,6 +1,7 @@
 import React, { useImperativeHandle } from 'react';
 import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { connect } from 'react-redux'
 
 import UserAuth from '../components/Auth'
 
@@ -8,7 +9,6 @@ class Comment extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            loggedin: false,
             comments_list: [],
             user: {
                 id: 1,
@@ -96,16 +96,6 @@ class Comment extends React.Component {
     //     this.fetchComments(this.state.photoId)
     // }
 
-    handleLogin = () => {
-        try {
-            this.setState({
-                loggedin: true
-            })
-        }catch(error){
-            console.log(error)
-        }
-    }
-
     render() {
         return (
             <View style={styles.container}>
@@ -130,11 +120,11 @@ class Comment extends React.Component {
                     )
                 }
                 {
-                    this.state.loggedin == true ? 
+                    this.props.isLoggedIn ? 
                     (
                         <KeyboardAvoidingView behavior="padding" enabled style={{borderTopWidth: 1, borderTopColor: 'grey', padding: 10, marginBottom: 15}}>
-                             <Text style={{fontWeight: 'bold'}}>Post Comment</Text>
                              <View>
+                                <Text style={{fontWeight: 'bold'}}>Post Comment</Text>
                                  <TextInput 
                                     editable={true}
                                     placeholder={'Enter your comment here...'}
@@ -149,7 +139,7 @@ class Comment extends React.Component {
                              </View>
                         </KeyboardAvoidingView>
                     ): (
-                        <UserAuth message={'Please login to upload your photo'}/>
+                        <UserAuth message={'Please login to add comment'}/>
                     )
                 }
             </View>
@@ -169,7 +159,19 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between"
     },
+    bottom: {
+        width: '100%',
+        height: 50,
+        position: 'absolute', //Here is the trick
+        bottom: 0, //Here is the trick
+    },
 })
 
-export default Comment;
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: state.auth.isLoggedIn,
+    };
+};
+
+export default connect(mapStateToProps, null)(Comment);
 

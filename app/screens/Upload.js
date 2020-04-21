@@ -131,7 +131,7 @@ class Upload extends React.Component {
     }
 
     render() {
-        const { loggedin, imageSelected, uploading, progress } = this.state;
+        const { imageSelected, uploading, progress } = this.state;
         
         return (
             <View style={styles.container}>
