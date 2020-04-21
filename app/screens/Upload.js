@@ -38,16 +38,6 @@ class Upload extends React.Component {
         return this.s4();
     }
 
-    handleLogin = () => {
-        try {
-            this.setState({
-                loggedin: true
-            })
-        }catch(error){
-            console.log(error)
-        }
-    }
-
     findNewImage = () => {
         // this._checkPermissions();
         ImagePicker.showImagePicker(options, (response) => {

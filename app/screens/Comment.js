@@ -118,8 +118,8 @@ class Comment extends React.Component {
                 {
                     this.state.comments_list.length == 0 ? (
                         // no comments show empty state
-                        <View>
-                            <Text></Text>
+                        <View style={{marginHorizontal: 10, marginVertical: 10}}>
+                            <Text>No comment available</Text>
                         </View>
                     ) : (
                         // There are comments
