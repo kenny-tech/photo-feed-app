@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, TextInput, StyleSheet, Text, View, Image, Alert } from 'react-native';
 import UserAuth from '../components/Auth'
+import { connect } from 'react-redux'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -75,13 +76,13 @@ class Profile extends React.Component {
         return (
             <View style={styles.container}>
                 {
-                    this.state.loggedin == true ? 
+                    this.props.isLoggedIn ? 
                     (
                         <View style={{flex: 1}}>
                             <View style={styles.profileView}>
                                 <Text>Profile</Text>
                             </View>
-                            <View style={{marginHorizontal: 60, marginVertical: 40}}>
+                            <View style={{marginHorizontal: 60, marginVertical: 20}}>
                                 <Text>{this.state.name}</Text>
                                 <Text>@{this.state.username}</Text>
                             </View>  
@@ -172,11 +173,11 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         width: 100,
         height: 100,
-        borderRadius: 50
+        borderRadius: 50,
     },
     buttonView: {
         flex: 1,
-        paddingTop: 50,
+        paddingTop: 10,
         paddingBottom: 20,
         borderBottomWidth: 1,
         marginLeft: 20
@@ -215,5 +216,10 @@ const styles = StyleSheet.create({
 
 })
 
-export default Profile;
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: state.auth.isLoggedIn,
+    };
+};
 
+export default connect(mapStateToProps, null)(Profile);

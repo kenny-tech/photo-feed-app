@@ -38,16 +38,6 @@ class Upload extends React.Component {
         return this.s4();
     }
 
-    handleLogin = () => {
-        try {
-            this.setState({
-                loggedin: true
-            })
-        }catch(error){
-            console.log(error)
-        }
-    }
-
     findNewImage = () => {
         // this._checkPermissions();
         ImagePicker.showImagePicker(options, (response) => {
@@ -133,11 +123,26 @@ class Upload extends React.Component {
         }     
     }
 
+    gobackToUpload = () => {
+        this.setState({
+            imageSelected: false,
+            imageSource: '',
+        })
+    }
+
     render() {
-        const { loggedin, imageSelected, uploading, progress } = this.state;
+        const { imageSelected, uploading, progress } = this.state;
         
         return (
             <View style={styles.container}>
+                <View style={styles.profileView}>
+                    <TouchableOpacity onPress={() => this.gobackToUpload()}>
+                        <Text style={{fontSize:12, fontWeight: "bold", paddingLeft: 10}}>Go Back</Text>
+                    </TouchableOpacity>
+                    <View style={{marginHorizontal: 10}}>
+                        <Text>Upload</Text>
+                    </View>
+                </View>
                 {
                     this.props.isLoggedIn ? 
                     (
@@ -199,17 +204,25 @@ class Upload extends React.Component {
     }
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    }
-})
-
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
     };
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    profileView: {
+        height: 70,
+        paddingTop: 30,
+        backgroundColor: 'white',
+        borderColor: 'lightgrey',
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+})
 
 export default connect(mapStateToProps, null)(Upload);
 
