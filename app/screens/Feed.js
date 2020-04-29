@@ -38,12 +38,10 @@ class Feed extends React.Component {
     }
 
     loadFeed = () => {
-        // fetch('http://127.0.0.1:8000/api/photo/get', {
-        //     method: 'GET'
-        // })
-        // .then(response => response.json())
-        // .then(response => (console.log('Response: ',response)))
-        // .catch(error => console.log(error))
+        fetch('http://10.0.2.2:3000/photos')
+        .then(response => response.json())
+        .then(response => (console.log('Response: ',response)))
+        .catch(error => console.log(error))
     }
 
     componentDidMount = () => {
