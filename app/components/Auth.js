@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch) => {
     return {
         login: (email, pass) => { dispatch(login(email, pass))},
-        login: (email, pass) => { dispatch(signup(email, pass))},
+        signup: (email, pass) => { dispatch(signup(email, pass))},
     }
 }
 
