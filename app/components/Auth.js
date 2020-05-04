@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native';
 
-import { login } from '../actions/auth';
+import { login, signup } from '../actions/auth';
 
 class Auth extends React.Component {
     constructor(props) {
@@ -58,15 +58,15 @@ class Auth extends React.Component {
 
         if(email!='' & pass!='') {
             try {
-                this.setState({
-                    loggedin: true,
-                    email: email,
-                    pass: pass
-                });
-                Alert.alert('Signup successful')
+                // this.setState({
+                //     loggedin: true,
+                //     email: email,
+                //     pass: pass
+                // });
+                // Alert.alert('Signup successful')
+                this.props.signup(email,pass);
             }catch(error){
                 console.log(error);
-                Alert.alert(error);
             }
         }else{
             Alert.alert('Email or password is empty');
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch) => {
     return {
         login: (email, pass) => { dispatch(login(email, pass))},
+        login: (email, pass) => { dispatch(signup(email, pass))},
     }
 }
 
