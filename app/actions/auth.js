@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { SIGNUP, LOGIN } from './types';
 
-export const signup = (email, pass) => async dispatch => {
+export const signup = (email,pass,name,username) => async dispatch => {
     axios.post('http://10.0.2.2:3000/signup', {
         email: email,
-        password: pass
+        password: pass,
+        name: name,
+        username: username
       })
       .then((response) => {
         console.log(response);
@@ -15,10 +17,6 @@ export const signup = (email, pass) => async dispatch => {
       })
       .catch((error) => {
           console.log(error);
-        // dispatch({
-        //   type: MAKE_PAYMENT,
-        //   payload: error
-        // })
       })
 }
 
