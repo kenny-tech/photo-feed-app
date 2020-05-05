@@ -20,11 +20,19 @@ export const signup = (email,pass,name,username) => async dispatch => {
       })
 }
 
-export const login = (email, pass) => {
-    return {
-        type: LOGIN,
-        payload: {
-            email
-        }
-    }
+export const login = (email, pass)  => async dispatch => {
+    axios.post('http://10.0.2.2:3000/signin', {
+        email: email,
+        password: pass,
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch({
+            type: LOGIN,
+            payload: response.data
+        });
+      })
+      .catch((error) => {
+          console.log(error);
+      })
 }
