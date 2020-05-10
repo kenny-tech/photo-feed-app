@@ -84,18 +84,21 @@ class Upload extends React.Component {
         this.setState({
             uploading: true
         })
-        this.processUpload(imageUrl)
+        this.processUpload()
         // Alert.alert('Uploading image to the server...')
     }
 
-    processUpload = (imageUrl) => {
-        let username = 'John';
+    processUpload = () => {
+
+        let userId = this.props.user.data.id;
+        let username = this.props.user.data.username;
         let caption = this.state.caption;
         let dateTime = Date.now();
         let timestamp = Math.floor(dateTime / 1000);
-        let base64Image = 'data:image/jpeg;base64,' + this.state.base64Value;
-        let url = 'jgjjhh';
         let posted = timestamp;
+        let base64Image = 'data:image/jpeg;base64,' + this.state.base64Value;
+
+
 
         // $base64Image = 'data:image/jpeg;base64' + this.state.base64Value;
 
@@ -108,9 +111,9 @@ class Upload extends React.Component {
         //     posted: timestamp,
         //     url, base64Image
         // };
+        this.props.add_photo(userId,username,caption,posted,base64Image);
+        console.log('User details: ',this.props.user.data)
 
-        this.props.add_photo(username,caption,posted,url);
-        
         // update database
         // add to main feed
 
@@ -221,12 +224,13 @@ class Upload extends React.Component {
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
+        user: state.auth.user,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        add_photo: (username,caption,posted,url) => { dispatch(add_photo(username,caption,posted,url))},
+        add_photo: (userId,username,caption,posted,base64Image) => { dispatch(add_photo(userId,username,caption,posted,base64Image))},
     }
 }
 

@@ -5,12 +5,12 @@ export default (state=[], action) => {
         case SIGNUP:      
             return  { 
                 ...state, 
-                response: action.payload,
+                user: action.payload,
             }    
         case LOGIN:      
             return  { 
                 ...state, 
-                response: action.payload,
+                user: action.payload,
                 isLoggedIn: true
             }    
             default:
