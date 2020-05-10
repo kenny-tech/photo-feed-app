@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import ImagePicker from 'react-native-image-picker';
 import UserAuth from '../components/Auth'
+import { add_photo } from '../actions/photo';
 
 const options = {
     title: 'Select Avatar',
@@ -22,7 +23,9 @@ class Upload extends React.Component {
             imageSource: '',
             uploading: true,
             progress: 50,
-            caption: ''
+            caption: '',
+            base64Value: '',
+            url: ''
         }
     }    
 
@@ -62,15 +65,16 @@ class Upload extends React.Component {
               const source = { uri: response.uri };
               // You can also display the image using data:
               // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+              const base64Value = response.data;
           
               this.setState({
                 imageSource: source,
                 imageSelected: true,
                 imageId: this.uniqueId(),
-                uri: response.uri
+                uri: response.uri,
+                base64Value: base64Value
               });
               let image = this.state.imageSource;
-              // console.log('Uploaded image: ',this.state.imageSource);
             }
           });
     }
@@ -85,17 +89,27 @@ class Upload extends React.Component {
     }
 
     processUpload = (imageUrl) => {
-        let userId = 1;
+        let username = 'John';
         let caption = this.state.caption;
         let dateTime = Date.now();
         let timestamp = Math.floor(dateTime / 1000);
+        let base64Image = 'data:image/jpeg;base64,' + this.state.base64Value;
+        let url = 'jgjjhh';
+        let posted = timestamp;
 
-        var photoObj = {
-            author: userId,
-            caption: caption,
-            posted: timestamp,
-            url, imageUrl
-        };
+        // $base64Image = 'data:image/jpeg;base64' + this.state.base64Value;
+
+        // console.log('Base64 image: ',base64Image)
+
+
+        // var photoObj = {
+        //     username: userId,
+        //     caption: caption,
+        //     posted: timestamp,
+        //     url, base64Image
+        // };
+
+        this.props.add_photo(username,caption,posted,url);
         
         // update database
         // add to main feed
@@ -210,6 +224,13 @@ const mapStateToProps = state => {
     };
 };
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        add_photo: (username,caption,posted,url) => { dispatch(add_photo(username,caption,posted,url))},
+    }
+}
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -224,5 +245,5 @@ const styles = StyleSheet.create({
     },
 })
 
-export default connect(mapStateToProps, null)(Upload);
+export default connect(mapStateToProps, mapDispatchToProps)(Upload);
 
