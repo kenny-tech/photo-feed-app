@@ -16,6 +16,6 @@ export const add_photo = (userId,caption,posted,base64Image) => async dispatch =
         });
       })
       .catch((error) => {
-          console.log(error);
+          console.log(error.response);
       })
 }
