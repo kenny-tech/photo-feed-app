@@ -16,7 +16,7 @@ export const signup = (email,pass,name,username) => async dispatch => {
         });
       })
       .catch((error) => {
-          console.log(error);
+          console.log(error.response);
       })
 }
 
@@ -33,6 +33,6 @@ export const login = (email, pass)  => async dispatch => {
         });
       })
       .catch((error) => {
-          console.log(error);
+          console.log(error.response);
       })
 }

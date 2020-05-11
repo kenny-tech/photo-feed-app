@@ -111,7 +111,7 @@ class Upload extends React.Component {
         //     posted: timestamp,
         //     url, base64Image
         // };
-        this.props.add_photo(userId,username,caption,posted,base64Image);
+        this.props.add_photo(userId,caption,posted,base64Image);
         console.log('User details: ',this.props.user.data)
 
         // update database
@@ -230,7 +230,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        add_photo: (userId,username,caption,posted,base64Image) => { dispatch(add_photo(userId,username,caption,posted,base64Image))},
+        add_photo: (userId,caption,posted,base64Image) => { dispatch(add_photo(userId,caption,posted,base64Image))},
     }
 }
 
