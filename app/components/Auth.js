@@ -62,15 +62,11 @@ class Auth extends React.Component {
 
         if(email!='' & pass!='' && name!='' && username!='') {
             try {
-                // this.setState({
-                //     loggedin: true,
-                //     email: email,
-                //     pass: pass
-                // });
-                // Alert.alert('Signup successful')
                 this.props.signup(email,pass,name,username);
                 // Alert.alert('Registration successful. Please login')
-                this.setState({ authStep: 1 })
+                if(this.props.errorMessage === 'Email already taken') {
+                    this.setState({ authStep: 2 })
+                } 
             }catch(error){
                 console.log(error);
             }
@@ -96,6 +92,7 @@ class Auth extends React.Component {
                             </TouchableOpacity>
                         </View>
                     ) : (<View style={{marginVertical: 20}}>
+                        { this.props.errorMessage !== '' ? (<Text style={{color: 'red'}}>{this.props.errorMessage}</Text>) : null }
                         {
                             this.state.authStep == 1 ? (
                             // Login
@@ -200,6 +197,12 @@ const styles = StyleSheet.create({
     },
 })
 
+const mapStateToProps = state => {
+    return {
+        errorMessage: state.auth.errorMessage,
+    };
+};
+
 const mapDispatchToProps = (dispatch) => {
     return {
         login: (email, pass) => { dispatch(login(email, pass))},
@@ -207,5 +210,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGNUP, LOGIN } from './types';
+import { SIGNUP, LOGIN, LOGIN_ERROR, SIGNUP_ERROR } from './types';
 
 export const signup = (email,pass,name,username) => async dispatch => {
     axios.post('http://10.0.2.2:3000/signup', {
@@ -16,7 +16,11 @@ export const signup = (email,pass,name,username) => async dispatch => {
         });
       })
       .catch((error) => {
-          console.log(error.response);
+          // console.log(error.response);
+          dispatch({
+            type: SIGNUP_ERROR,
+            payload: error.response.data.message
+          });
       })
 }
 
@@ -26,13 +30,17 @@ export const login = (email, pass)  => async dispatch => {
         password: pass,
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         dispatch({
             type: LOGIN,
             payload: response.data
         });
       })
       .catch((error) => {
-          console.log(error.response);
+          // console.log(error.response.data.message);
+          dispatch({
+            type: LOGIN_ERROR,
+            payload: error.response.data.message
+          });
       })
 }
