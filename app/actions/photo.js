@@ -3,12 +3,13 @@ import { ADD_PHOTO } from './types';
 
 import { baseurl } from '../../config/config'
 
-export const add_photo = (userId,caption,posted,base64Image) => async dispatch => {
+export const add_photo = (userId,caption,posted,base64Image,username) => async dispatch => {
     axios.post(baseurl + '/photos', {
         userId: userId,
         caption: caption,
         posted: posted,
-        base64Image: base64Image
+        base64Image: base64Image,
+        username: username
     })
       .then((response) => {
         console.log(response);

@@ -1,6 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, Image } from 'react-native';
 
+import { baseurl } from '../../config/config'
+
 import image1 from '../images/phone.jpg';
 import image2 from '../images/macbookpro.jpg';
 import image3 from '../images/ecommerce.jpg';
@@ -38,8 +40,9 @@ class Feed extends React.Component {
     }
 
     loadFeed = () => {
-        fetch('http://10.0.2.2:3000/photos')
+        fetch(baseurl + '/photos')
         .then(response => response.json())
+        // .then(response => (this.setState({feed: response})))
         .then(response => (console.log('Response: ',response)))
         .catch(error => console.log(error))
     }
