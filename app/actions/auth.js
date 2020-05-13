@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { SIGNUP, LOGIN, LOGIN_ERROR, SIGNUP_ERROR } from './types';
 
+import { baseurl } from '../../config/config'
+
 export const signup = (email,pass,name,username) => async dispatch => {
-    axios.post('http://10.0.2.2:3000/signup', {
+    axios.post(baseurl + '/signup', {
         email: email,
         password: pass,
         name: name,
@@ -25,7 +27,7 @@ export const signup = (email,pass,name,username) => async dispatch => {
 }
 
 export const login = (email, pass)  => async dispatch => {
-    axios.post('http://10.0.2.2:3000/signin', {
+    axios.post(baseurl + '/signin', {
         email: email,
         password: pass,
       })
