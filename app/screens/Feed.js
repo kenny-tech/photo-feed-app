@@ -42,8 +42,8 @@ class Feed extends React.Component {
     loadFeed = () => {
         fetch(baseurl + '/photos')
         .then(response => response.json())
-        // .then(response => (this.setState({feed: response})))
         .then(response => (console.log('Response: ',response)))
+        // .then(response => (console.log('Response: ',response)))
         .catch(error => console.log(error))
     }
 
