@@ -63,10 +63,11 @@ class Auth extends React.Component {
         if(email!='' & pass!='' && name!='' && username!='') {
             try {
                 this.props.signup(email,pass,name,username);
-                // Alert.alert('Registration successful. Please login')
                 if(this.props.errorMessage === 'Email already taken') {
                     this.setState({ authStep: 2 })
                 } 
+                this.setState({ authStep: 1 })
+                Alert.alert('Registration successful. Please login')
             }catch(error){
                 console.log(error);
             }
