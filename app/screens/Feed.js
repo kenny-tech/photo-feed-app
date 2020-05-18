@@ -17,6 +17,7 @@ class Feed extends React.Component {
                 id: 1,
                 name: 'Kenny'
             },
+            feed: []
             // feed: [
             //     {
             //         user: 'Kenny',
@@ -44,7 +45,7 @@ class Feed extends React.Component {
         fetch(baseurl + '/photos')
         .then(response => response.json())
         .then(response => (this.setState({feed: response})))
-        .then(response => (console.log('Response: ',response)))
+        .then(response => (console.log('Response: ',this.state.feed)))
         .catch(error => console.log(error))
     }
 
@@ -110,7 +111,7 @@ class Feed extends React.Component {
                                 <Text>{this.timeConverter(item.posted)}</Text>
                                 <Text>@{item.username}</Text>
                             </View>
-                            <Image source={{uri: imageurl + item.image}} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
+                            <Image source={{uri: item.image}} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
                             <Text style={{marginHorizontal: 20}}>{item.caption}</Text>
                             <TouchableOpacity
                                 onPress={() => this.props.navigation.navigate('Comment', {photoId: 5})}>
@@ -118,7 +119,7 @@ class Feed extends React.Component {
                             </TouchableOpacity>
                         </View>
                     )}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item._id}
                 />
             </View>
         )
