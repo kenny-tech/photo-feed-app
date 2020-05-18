@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, Image } from 'react-native';
 
 import { baseurl } from '../../config/config'
+import { imageurl } from '../../config/config'
 
 import image1 from '../images/phone.jpg';
 import image2 from '../images/macbookpro.jpg';
@@ -16,34 +17,35 @@ class Feed extends React.Component {
                 id: 1,
                 name: 'Kenny'
             },
-            feed: [
-                {
-                    user: 'Kenny',
-                    caption: 'My first photo',
-                    posted: '1587168000',
-                    url: image1,
-                },
-                {
-                    user: 'John',
-                    caption: 'My second photo',
-                    posted: '1586044700',
-                    url: image2,
-                },
-                {
-                    user: 'Peter',
-                    caption: 'My third photo',
-                    posted: '1585094400',
-                    url: image3
-                }
-            ]
+            feed: []
+            // feed: [
+            //     {
+            //         user: 'Kenny',
+            //         caption: 'My first photo',
+            //         posted: '1587168000',
+            //         url: image1,
+            //     },
+            //     {
+            //         user: 'John',
+            //         caption: 'My second photo',
+            //         posted: '1586044700',
+            //         url: image2,
+            //     },
+            //     {
+            //         user: 'Peter',
+            //         caption: 'My third photo',
+            //         posted: '1585094400',
+            //         url: image3
+            //     }
+            // ]
         }
     }
 
     loadFeed = () => {
         fetch(baseurl + '/photos')
         .then(response => response.json())
-        .then(response => (console.log('Response: ',response)))
-        // .then(response => (console.log('Response: ',response)))
+        .then(response => (this.setState({feed: response})))
+        .then(response => (console.log('Response: ',this.state.feed)))
         .catch(error => console.log(error))
     }
 
@@ -107,9 +109,9 @@ class Feed extends React.Component {
                         <View>
                             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 5}}>
                                 <Text>{this.timeConverter(item.posted)}</Text>
-                                <Text>@{item.user}</Text>
+                                <Text>@{item.username}</Text>
                             </View>
-                            <Image source={item.url} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
+                            <Image source={{uri: item.image}} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
                             <Text style={{marginHorizontal: 20}}>{item.caption}</Text>
                             <TouchableOpacity
                                 onPress={() => this.props.navigation.navigate('Comment', {photoId: 5})}>
@@ -117,7 +119,7 @@ class Feed extends React.Component {
                             </TouchableOpacity>
                         </View>
                     )}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item._id}
                 />
             </View>
         )
