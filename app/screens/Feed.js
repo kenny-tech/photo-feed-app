@@ -2,11 +2,6 @@ import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, Image } from 'react-native';
 
 import { baseurl } from '../../config/config'
-import { imageurl } from '../../config/config'
-
-import image1 from '../images/phone.jpg';
-import image2 from '../images/macbookpro.jpg';
-import image3 from '../images/ecommerce.jpg';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -18,26 +13,6 @@ class Feed extends React.Component {
                 name: 'Kenny'
             },
             feed: []
-            // feed: [
-            //     {
-            //         user: 'Kenny',
-            //         caption: 'My first photo',
-            //         posted: '1587168000',
-            //         url: image1,
-            //     },
-            //     {
-            //         user: 'John',
-            //         caption: 'My second photo',
-            //         posted: '1586044700',
-            //         url: image2,
-            //     },
-            //     {
-            //         user: 'Peter',
-            //         caption: 'My third photo',
-            //         posted: '1585094400',
-            //         url: image3
-            //     }
-            // ]
         }
     }
 
