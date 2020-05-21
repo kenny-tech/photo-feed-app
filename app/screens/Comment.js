@@ -4,16 +4,14 @@ import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux'
 
 import UserAuth from '../components/Auth'
+import { add_comment } from '../actions/comment';
 
 class Comment extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             comments_list: [],
-            user: {
-                id: 1,
-                name: 'Kenny'
-            }
+            photoId: ''
         }
     }
 
@@ -23,7 +21,7 @@ class Comment extends React.Component {
 
     checkParams = () => {
         var photoId = this.props.route.params.photoId
-        Alert.alert(photoId);
+        // Alert.alert(photoId);
         if(photoId) {
             this.setState({
                 photoId: photoId
@@ -32,9 +30,9 @@ class Comment extends React.Component {
         }
     }
 
-    addCommmentToList = (comments_list, data, comment) => {
+    // addCommmentToList = (comments_list, data, comment) => {
 
-    }
+    // }
 
     fetchComments = (photoId) => {
         // fetch photo id comments order by posted
@@ -53,23 +51,15 @@ class Comment extends React.Component {
 
     postComment = () => {
         let comment = this.state.comment;
+        
         if(comment != '') {
-            // process
-            // let imageId = this.state.photoId;
-            // let commentId = this.uniqueId();
-            // let dateTime = Date.now();
-            // let timeStamp = Math.floor(dateTime / 1000);
-            
-            // let commentObj = {
-            //     posted: timeStamp,
-            //     author: userId,
-            //     comment: comment
-            // }
+            let photoId = this.state.photoId;
+            let dateTime = Date.now();
+            let timestamp = Math.floor(dateTime / 1000);
+            let posted = timestamp;
+            let username = this.props.user.data.username;
 
-            // post comment
-
-            // reload comment
-            // this.reloadCommentList();
+            this.props.add_comment(photoId,username,posted,comment);
 
         }else{
             Alert.alert('Please enter a comment before posting');
@@ -158,8 +148,15 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
+        user: state.auth.user,
     };
 };
 
-export default connect(mapStateToProps, null)(Comment);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        add_comment: (photoId,username,posted,comment) => { dispatch(add_comment(photoId,username,posted,comment))},
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);
 
