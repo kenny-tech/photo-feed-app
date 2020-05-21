@@ -1,58 +1,24 @@
 import React from 'react';
 import { TouchableOpacity, TextInput, StyleSheet, Text, View, Image, Alert } from 'react-native';
-import UserAuth from '../components/Auth'
 import { connect } from 'react-redux'
+
+import UserAuth from '../components/Auth'
+import { updateProfile } from '../actions/auth';
+
 
 class Profile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            loggedIn: false,
             editingProfile: false,
-            name: 'John',
-            username: 'john'
+            name: this.props.isLoggedIn? this.props.user.data.name : '',
+            username: this.props.isLoggedIn? this.props.user.data.username : '',
         }
     }
 
-    fetchUserInfo = (userId) => {
-        // fetch user info from db
-
-        // if user info exists, set it in state
-        // if(exists) {
-        //     this.setState({
-        //         username: data.username,
-        //         name: data.name,
-        //         loggedin: true,
-        //         userId: userId
-        //     })
-        // }
-    }
-
-    componentDidMount = () => {
-        // get user
-
-        // if(user) {
-        //     this.fetchUserInfo(user.uid)
-        // } else {
-        //     this.setState({
-        //         loggedin: false
-        //     })
-        // }
-    }
-
-    handleLogin = () => {
-        try {
-            this.setState({
-                loggedin: true
-            })
-        }catch(error){
-            console.log(error)
-        }
-    }
-
-    logout = () => {
-        Alert.alert('Logged out');
-    }
+    // logout = () => {
+    //     Alert.alert('Logged out');
+    // }
 
     editProfile = () => {
         this.setState({editingProfile: true})
@@ -61,14 +27,17 @@ class Profile extends React.Component {
     saveProfile = () => {
         let name = this.state.name;
         let username = this.state.username;
+        let userId = this.props.user.data.id;
+
+        console.log('Username: ',username);
 
         if(name !== '' && username != '')
         {
-            // Save profile to database
-            Alert.alert('Profile successfully updated');
+            this.props.updateProfile(name, username, userId);
             this.setState({
                 editingProfile: false
             })
+            Alert.alert('Profile successfully updated');
         }
     }
 
@@ -83,8 +52,8 @@ class Profile extends React.Component {
                                 <Text>Profile</Text>
                             </View>
                             <View style={{marginHorizontal: 60, marginVertical: 20}}>
-                                <Text>{this.state.name}</Text>
-                                <Text>@{this.state.username}</Text>
+                                <Text>{this.props.user.data.name}</Text>
+                                <Text>@{this.props.user.data.username}</Text>
                             </View>  
                             <View style={styles.profileImageTopView}>
                                 {this.state.editingProfile == true ? (
@@ -98,7 +67,7 @@ class Profile extends React.Component {
                                         editable={true}
                                         placeholder={'Enter your name'}
                                         onChangeText={(text) => this.setState({name: text})}
-                                        value={this.state.name}
+                                        value={this.props.user.data.name}
                                         style={{width: 200, marginVertical: 10, padding: 5, borderColor: 'grey', borderWidth: 1}}
                                     />
                                     <Text>Username:</Text>
@@ -106,7 +75,7 @@ class Profile extends React.Component {
                                         editable={true}
                                         placeholder={'Enter your username'}
                                         onChangeText={(text) => this.setState({username: text})}
-                                        value={this.state.username}
+                                        value={this.props.user.data.username}
                                         style={{width: 200, marginVertical: 10, padding: 5, borderColor: 'grey', borderWidth: 1}}
                                     />
                                     <TouchableOpacity 
@@ -219,7 +188,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
+        user: state.auth.user,
     };
 };
 
-export default connect(mapStateToProps, null)(Profile);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateProfile: (name, username, userId) => { dispatch(updateProfile(name, username, userId))},
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
