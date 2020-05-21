@@ -7,11 +7,6 @@ class Feed extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            loggedIn: false,
-            user: {
-                id: 1,
-                name: 'Kenny'
-            },
             feed: []
         }
     }
@@ -89,7 +84,12 @@ class Feed extends React.Component {
                             <Image source={{uri: item.image}} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
                             <Text style={{marginHorizontal: 20}}>{item.caption}</Text>
                             <TouchableOpacity
-                                onPress={() => this.props.navigation.navigate('Comment', {photoId: 5})}>
+                                onPress={() => {
+                                    this.props.navigation.navigate('Comment', {
+                                        photoId: item._id,
+                                    });
+                                  }}
+                            >
                                 <Text style={{color: 'blue', marginTop: 10, textAlign: 'center'}}>[ View comments ]</Text>
                             </TouchableOpacity>
                         </View>

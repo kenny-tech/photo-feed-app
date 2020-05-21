@@ -18,30 +18,18 @@ class Comment extends React.Component {
     }
 
     componentDidMount = () => {
-        // if user object is available set login to true otherwise set login to false
-        if(this.state.user) {
-            this.setState({
-                loggedin: true
-            })
-        } else {
-            this.setState({
-                loggedin: false
-            })
-        }
         this.checkParams()
     }
 
     checkParams = () => {
-        // var params = this.props.state.params
-        // Alert.alert(params.photoId);
-        // if(params) {
-        //     if(params.photoId) {
-        //         this.setState({
-        //             photoId: params.photoId
-        //         });
-        //         this.fetchComments(params.photoId);
-        //     }
-        // }
+        var photoId = this.props.route.params.photoId
+        Alert.alert(photoId);
+        if(photoId) {
+            this.setState({
+                photoId: photoId
+            });
+            this.fetchComments(photoId);   
+        }
     }
 
     addCommmentToList = (comments_list, data, comment) => {
