@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGNUP, LOGIN, LOGIN_ERROR, SIGNUP_ERROR } from './types';
+import { SIGNUP, LOGIN, LOGIN_ERROR, SIGNUP_ERROR, UPDATE_PROFILE } from './types';
 
 import { baseurl } from '../../config/config'
 
@@ -32,7 +32,7 @@ export const login = (email, pass)  => async dispatch => {
         password: pass,
       })
       .then((response) => {
-        // console.log(response);
+        console.log(response);
         dispatch({
             type: LOGIN,
             payload: response.data
@@ -45,4 +45,26 @@ export const login = (email, pass)  => async dispatch => {
             payload: error.response.data.message
           });
       })
+}
+
+export const updateProfile = (name, username, userId)  => async dispatch => {
+  // console.log('User id: ',userId);
+  axios.post(baseurl + '/updateProfile/' + userId, {
+      name: name,
+      username: username,
+    })
+    .then((response) => {
+      console.log('Profile update: ',response);
+      dispatch({
+          type: UPDATE_PROFILE,
+          payload: response.data
+      });
+    })
+    .catch((error) => {
+        console.log(error.response.data.message);
+        // dispatch({
+        //   type: LOGIN_ERROR,
+        //   payload: error.response.data.message
+        // });
+    })
 }

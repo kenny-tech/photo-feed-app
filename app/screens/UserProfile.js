@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import { TouchableOpacity, Alert, StyleSheet, Text, View, Image } from 'react-native';
 
 class UserProfile extends React.Component {
@@ -10,19 +11,6 @@ class UserProfile extends React.Component {
         }
     }
     
-
-    checkParams = () => {
-        // var params = this.props.navigation.state.userId
-        // // Alert.alert(user_id);
-        // if(params) {
-        //     if(params.userId) {
-        //         this.setState({
-        //             userId: params.userId
-        //         });
-        //         this.fetchUserInfo(params.userId);
-        //     }
-        // }
-    }
 
     fetchUserInfo = (userId) => {
         Alert.alert(userId)
@@ -58,8 +46,8 @@ class UserProfile extends React.Component {
                     <View style={styles.profileImageTopView}>
                         <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>
                         <View style={{marginRight: 5}}>
-                            <Text>Name</Text>
-                            <Text>@username</Text>
+                            <Text>{this.props.user.data.name}</Text>
+                            <Text>@{this.props.user.data.username}</Text>
                         </View>
                         <View style={styles.buttonView}>
                             <TouchableOpacity style={styles.button}>
@@ -156,5 +144,12 @@ const styles = StyleSheet.create({
 
 })
 
-export default UserProfile;
+const mapStateToProps = state => {
+    return {
+        user: state.auth.user,
+    };
+};
+
+export default connect(mapStateToProps, null)(UserProfile);
+
 
