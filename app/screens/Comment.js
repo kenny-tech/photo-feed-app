@@ -11,7 +11,8 @@ class Comment extends React.Component {
         super(props)
         this.state = {
             comments_list: [],
-            photoId: ''
+            photoId: '',
+            comment: '',
         }
     }
 
@@ -60,7 +61,9 @@ class Comment extends React.Component {
             let username = this.props.user.data.username;
 
             this.props.add_comment(photoId,username,posted,comment);
-
+            if(this.props.comment === 'success') {
+                Alert.alert('Comment successfully added');
+            }
         }else{
             Alert.alert('Please enter a comment before posting');
         }
@@ -110,7 +113,7 @@ class Comment extends React.Component {
                                     style={{marginVertical: 10, height: 50, padding: 5, borderColor: 'grey', borderRadius: 3, backgroundColor: 'white', color: 'black'}}
                                  />
                                  <TouchableOpacity
-                                    onPress={() => this.postComment}
+                                    onPress={() => this.postComment()}
                                     style={{backgroundColor: 'blue', borderRadius: 3, width: 100, height: 30, justifyContent: 'center'}}>
                                      <Text style={{color:'white', textAlign: 'center'}}>Post</Text>
                                  </TouchableOpacity>
@@ -149,6 +152,7 @@ const mapStateToProps = state => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
         user: state.auth.user,
+        comment: state.comment.message,
     };
 };
 

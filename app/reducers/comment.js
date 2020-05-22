@@ -5,7 +5,7 @@ export default (state=[], action) => {
         case ADD_COMMENT:      
             return  { 
                 ...state, 
-                comment: action.payload,
+                message: action.payload,
             }   
             default:
                 return state;
