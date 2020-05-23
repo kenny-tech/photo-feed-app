@@ -37,15 +37,6 @@ class Auth extends React.Component {
         if(email!='' & pass!='') {
             try { 
                 this.props.login(email,pass);
-                // this.setState({
-                //     loggedin: true,
-                //     email: email,
-                //     pass: pass
-                // });
-                // this.props.navigation.navigate('Upload');
-                // this.props.navigation.navigate(this.props.page);
-                // console.log('Page: ',this.props.page);
-                // Alert.alert('Login successful')
             }catch(error){
                 console.log(error);
             }

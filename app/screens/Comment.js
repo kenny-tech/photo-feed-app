@@ -1,92 +1,100 @@
 import React, { useImperativeHandle } from 'react';
-import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native';
+import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert, Image } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux'
 
 import UserAuth from '../components/Auth'
+import { add_comment, fetch_comment } from '../actions/comment';
 
 class Comment extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             comments_list: [],
-            user: {
-                id: 1,
-                name: 'Kenny'
-            }
+            photoId: '',
+            comment: '',
         }
     }
 
     componentDidMount = () => {
-        // if user object is available set login to true otherwise set login to false
-        if(this.state.user) {
-            this.setState({
-                loggedin: true
-            })
-        } else {
-            this.setState({
-                loggedin: false
-            })
-        }
         this.checkParams()
     }
 
-    checkParams = () => {
-        // var params = this.props.state.params
-        // Alert.alert(params.photoId);
-        // if(params) {
-        //     if(params.photoId) {
-        //         this.setState({
-        //             photoId: params.photoId
-        //         });
-        //         this.fetchComments(params.photoId);
-        //     }
-        // }
+    pluralCheck = (s) => {
+        if(s == 1){
+            return ' ago';
+        }else{
+            return 's ago';
+        }
     }
 
-    addCommmentToList = (comments_list, data, comment) => {
+    timeConverter = (timestamp) => {
 
+        let a, seconds, interval;
+        a = new Date(timestamp * 1000);
+        seconds = Math.floor((new Date() - a) / 1000);
+
+        interval = Math.floor(seconds / 31536000);
+        if(interval > 1){
+            return interval+ ' year'+this.pluralCheck(interval)
+        }
+
+        interval = Math.floor(seconds / 2592000);
+        if(interval > 1){
+            return interval+ ' month'+this.pluralCheck(interval)
+        }
+
+        interval = Math.floor(seconds / 86400);
+        if(interval > 1){
+            return interval+ ' day'+this.pluralCheck(interval)
+        }
+
+        interval = Math.floor(seconds / 3600);
+        if(interval > 1){
+            return interval+ ' hour'+this.pluralCheck(interval)
+        }
+
+        interval = Math.floor(seconds / 60);
+        if(interval > 1){
+            return interval+ ' minute'+this.pluralCheck(interval)
+        }
+
+        return Math.floor(seconds)+ ' second'+this.pluralCheck(seconds)
+    }
+
+
+    checkParams = () => {
+        let photoId = this.props.route.params.photoId
+        // Alert.alert(photoId);
+        if(photoId) {
+            this.setState({
+                photoId: photoId
+            });
+            this.fetchComments(photoId);   
+        }
     }
 
     fetchComments = (photoId) => {
-        // fetch photo id comments order by posted
-        // const exists = get comments
-        // if(exists) {
-        //     // add comments to Flatlist
-        // }else{
-        //     this.setState({
-        //         comments_list: []
-        //     })
-        // }
-        // for ( var comment in data) {
-        //     this.addCommmentToList(comments_list, data, comment)
-        // }
+        this.props.fetch_comment(photoId);
     }
 
     postComment = () => {
         let comment = this.state.comment;
+        
         if(comment != '') {
-            // process
-            // let imageId = this.state.photoId;
-            // let commentId = this.uniqueId();
-            // let dateTime = Date.now();
-            // let timeStamp = Math.floor(dateTime / 1000);
-            
-            // let commentObj = {
-            //     posted: timeStamp,
-            //     author: userId,
-            //     comment: comment
-            // }
+            let photoId = this.state.photoId;
+            let dateTime = Date.now();
+            let timestamp = Math.floor(dateTime / 1000);
+            let posted = timestamp;
+            let username = this.props.user.data.username;
 
-            // post comment
-
-            // reload comment
-            // this.reloadCommentList();
-
+            this.props.add_comment(photoId,username,posted,comment);
+            if(this.props.comment === 'success') {
+                Alert.alert('Comment successfully added');
+            }
         }else{
             Alert.alert('Please enter a comment before posting');
         }
-
     }
 
     // reloadCommentList = () => {
@@ -97,6 +105,9 @@ class Comment extends React.Component {
     // }
 
     render() {
+
+        const { comment } = this.props;
+        // console.log('Comments here 123: ', comment)
         return (
             <View style={styles.container}>
                 <View style={styles.commentView}>
@@ -106,24 +117,35 @@ class Comment extends React.Component {
                     <Text>Comment</Text>
                 </View>
                 {
-                    this.state.comments_list.length == 0 ? (
+                    comment === undefined || comment.length == 0 ? (
                         // no comments show empty state
-                        <View style={{marginHorizontal: 10, marginVertical: 10}}>
+                        <View style={{marginHorizontal: 20, marginVertical: 10}}>
                             <Text>No comment available</Text>
                         </View>
                     ) : (
                         // There are comments
-                        <FlatList
-                            data = {this.state.comments_list}
-                        />
-                    
+                        <View>
+                            <Image source={{uri: this.props.route.params.image}} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
+                            <FlatList
+                                data={comment}
+                                renderItem={({ item }) => (
+                                    <View>
+                                        <View style={{marginHorizontal: 10, marginVertical: 10}}>
+                                            <Text style={{marginHorizontal: 20, fontWeight: 'bold'}}>{item.comment}</Text>                                    
+                                            <Text style={{marginHorizontal: 20, fontStyle: 'italic', fontSize: 12}}>By: {item.username}, Posted: {this.timeConverter(item.posted)}</Text>
+                                        </View>
+                                    </View>
+                                )}
+                                keyExtractor={item => item._id}
+                            />
+                        </View>
                     )
                 }
                 {
                     this.props.isLoggedIn ? 
                     (
                         <KeyboardAvoidingView behavior="padding" enabled style={{borderTopWidth: 1, borderTopColor: 'grey', padding: 10, marginBottom: 15}}>
-                             <View>
+                             <View style={{marginHorizontal: 20}}>
                                 <Text style={{fontWeight: 'bold'}}>Post Comment</Text>
                                  <TextInput 
                                     editable={true}
@@ -132,7 +154,7 @@ class Comment extends React.Component {
                                     style={{marginVertical: 10, height: 50, padding: 5, borderColor: 'grey', borderRadius: 3, backgroundColor: 'white', color: 'black'}}
                                  />
                                  <TouchableOpacity
-                                    onPress={() => this.postComment}
+                                    onPress={() => this.postComment()}
                                     style={{backgroundColor: 'blue', borderRadius: 3, width: 100, height: 30, justifyContent: 'center'}}>
                                      <Text style={{color:'white', textAlign: 'center'}}>Post</Text>
                                  </TouchableOpacity>
@@ -170,8 +192,17 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
+        user: state.auth.user,
+        comment: state.comment.comment,
     };
 };
 
-export default connect(mapStateToProps, null)(Comment);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        add_comment: (photoId,username,posted,comment) => { dispatch(add_comment(photoId,username,posted,comment))},
+        fetch_comment: (photoId) => { dispatch(fetch_comment(photoId))}
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);
 
