@@ -86,7 +86,7 @@ class Feed extends React.Component {
                             <TouchableOpacity
                                 onPress={() => {
                                     this.props.navigation.navigate('Comment', {
-                                        photoId: item._id,
+                                        photoId: item._id, image: item.image
                                     });
                                   }}
                             >

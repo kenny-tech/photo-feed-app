@@ -1,10 +1,10 @@
 import React, { useImperativeHandle } from 'react';
-import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert } from 'react-native';
+import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert, Image } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { connect } from 'react-redux'
 
 import UserAuth from '../components/Auth'
-import { add_comment } from '../actions/comment';
+import { add_comment, fetch_comment } from '../actions/comment';
 
 class Comment extends React.Component {
     constructor(props) {
@@ -20,8 +20,51 @@ class Comment extends React.Component {
         this.checkParams()
     }
 
+    pluralCheck = (s) => {
+        if(s == 1){
+            return ' ago';
+        }else{
+            return 's ago';
+        }
+    }
+
+    timeConverter = (timestamp) => {
+
+        let a, seconds, interval;
+        a = new Date(timestamp * 1000);
+        seconds = Math.floor((new Date() - a) / 1000);
+
+        interval = Math.floor(seconds / 31536000);
+        if(interval > 1){
+            return interval+ ' year'+this.pluralCheck(interval)
+        }
+
+        interval = Math.floor(seconds / 2592000);
+        if(interval > 1){
+            return interval+ ' month'+this.pluralCheck(interval)
+        }
+
+        interval = Math.floor(seconds / 86400);
+        if(interval > 1){
+            return interval+ ' day'+this.pluralCheck(interval)
+        }
+
+        interval = Math.floor(seconds / 3600);
+        if(interval > 1){
+            return interval+ ' hour'+this.pluralCheck(interval)
+        }
+
+        interval = Math.floor(seconds / 60);
+        if(interval > 1){
+            return interval+ ' minute'+this.pluralCheck(interval)
+        }
+
+        return Math.floor(seconds)+ ' second'+this.pluralCheck(seconds)
+    }
+
+
     checkParams = () => {
-        var photoId = this.props.route.params.photoId
+        let photoId = this.props.route.params.photoId
         // Alert.alert(photoId);
         if(photoId) {
             this.setState({
@@ -31,23 +74,8 @@ class Comment extends React.Component {
         }
     }
 
-    // addCommmentToList = (comments_list, data, comment) => {
-
-    // }
-
     fetchComments = (photoId) => {
-        // fetch photo id comments order by posted
-        // const exists = get comments
-        // if(exists) {
-        //     // add comments to Flatlist
-        // }else{
-        //     this.setState({
-        //         comments_list: []
-        //     })
-        // }
-        // for ( var comment in data) {
-        //     this.addCommmentToList(comments_list, data, comment)
-        // }
+        this.props.fetch_comment(photoId);
     }
 
     postComment = () => {
@@ -67,7 +95,6 @@ class Comment extends React.Component {
         }else{
             Alert.alert('Please enter a comment before posting');
         }
-
     }
 
     // reloadCommentList = () => {
@@ -78,6 +105,9 @@ class Comment extends React.Component {
     // }
 
     render() {
+
+        const { comment } = this.props;
+        // console.log('Comments here 123: ', comment)
         return (
             <View style={styles.container}>
                 <View style={styles.commentView}>
@@ -87,24 +117,35 @@ class Comment extends React.Component {
                     <Text>Comment</Text>
                 </View>
                 {
-                    this.state.comments_list.length == 0 ? (
+                    comment === undefined || comment.length == 0 ? (
                         // no comments show empty state
-                        <View style={{marginHorizontal: 10, marginVertical: 10}}>
+                        <View style={{marginHorizontal: 20, marginVertical: 10}}>
                             <Text>No comment available</Text>
                         </View>
                     ) : (
                         // There are comments
-                        <FlatList
-                            data = {this.state.comments_list}
-                        />
-                    
+                        <View>
+                            <Image source={{uri: this.props.route.params.image}} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
+                            <FlatList
+                                data={comment}
+                                renderItem={({ item }) => (
+                                    <View>
+                                        <View style={{marginHorizontal: 10, marginVertical: 10}}>
+                                            <Text style={{marginHorizontal: 20, fontWeight: 'bold'}}>{item.comment}</Text>                                    
+                                            <Text style={{marginHorizontal: 20, fontStyle: 'italic', fontSize: 12}}>By: {item.username}, Posted: {this.timeConverter(item.posted)}</Text>
+                                        </View>
+                                    </View>
+                                )}
+                                keyExtractor={item => item._id}
+                            />
+                        </View>
                     )
                 }
                 {
                     this.props.isLoggedIn ? 
                     (
                         <KeyboardAvoidingView behavior="padding" enabled style={{borderTopWidth: 1, borderTopColor: 'grey', padding: 10, marginBottom: 15}}>
-                             <View>
+                             <View style={{marginHorizontal: 20}}>
                                 <Text style={{fontWeight: 'bold'}}>Post Comment</Text>
                                  <TextInput 
                                     editable={true}
@@ -152,13 +193,14 @@ const mapStateToProps = state => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
         user: state.auth.user,
-        comment: state.comment.message,
+        comment: state.comment.comment,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         add_comment: (photoId,username,posted,comment) => { dispatch(add_comment(photoId,username,posted,comment))},
+        fetch_comment: (photoId) => { dispatch(fetch_comment(photoId))}
     }
 }
 
