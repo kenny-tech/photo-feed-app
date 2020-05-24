@@ -117,7 +117,7 @@ class Profile extends React.Component {
                             {
                                 userPhotos === undefined || userPhotos.length == 0 ? 
                                 (<View style={styles.loadPhotosView}>
-                                    <Text style={{color: 'white'}}>No photos uploaded yet...</Text>
+                                    <Text>No photos uploaded yet...</Text>
                                 </View>) :
                                 (<View style={styles.loadPhotosView}> 
                                     <FlatList
