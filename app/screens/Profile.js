@@ -1,10 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, TextInput, StyleSheet, Text, View, Image, Alert } from 'react-native';
+import { TouchableOpacity, TextInput, StyleSheet, Text, View, Image, Alert, FlatList } from 'react-native';
 import { connect } from 'react-redux'
 
-import UserAuth from '../components/Auth'
+import { baseurl } from '../../config/config'
 import { updateProfile } from '../actions/auth';
-
+import UserAuth from '../components/Auth'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -13,12 +13,23 @@ class Profile extends React.Component {
             editingProfile: false,
             name: this.props.isLoggedIn? this.props.user.data.name : '',
             username: this.props.isLoggedIn? this.props.user.data.username : '',
+            userId: this.props.isLoggedIn? this.props.user.data.id : '',
+            userPhotos: []
         }
     }
 
-    // logout = () => {
-    //     Alert.alert('Logged out');
-    // }
+    componentDidMount = () => {
+        this.loadUserPhoto();
+    }
+
+    loadUserPhoto = () => {
+        let userId = this.state.userId;
+        fetch(baseurl + '/userPhotos/' + userId)
+        .then(response => response.json())
+        // .then(response => console.log('photo response: ',response.data))
+        .then(response => (this.setState({userPhotos: response.data})))
+        .catch(error => console.log(error)) 
+    }
 
     editProfile = () => {
         this.setState({editingProfile: true})
@@ -42,6 +53,9 @@ class Profile extends React.Component {
     }
 
     render() {
+
+        const { userPhotos } = this.state;
+
         return (
             <View style={styles.container}>
                 {
@@ -99,9 +113,26 @@ class Profile extends React.Component {
                                 <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>
                                                            
                             </View>
-                            <View style={styles.loadPhotosView}>
-                                <Text>Loading photos...</Text>
-                            </View>
+                            
+                            {
+                                userPhotos === undefined || userPhotos.length == 0 ? 
+                                (<View style={styles.loadPhotosView}>
+                                    <Text style={{color: 'white'}}>No photos uploaded yet...</Text>
+                                </View>) :
+                                (<View style={styles.loadPhotosView}> 
+                                    <FlatList
+                                        data={this.state.userPhotos}
+                                        renderItem={({ item }) => (
+                                            <View>
+                                                <Image source={{uri: item.image}} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
+                                            </View>
+                                        )}
+                                        keyExtractor={item => item._id}
+                                    />
+                                </View>
+                                )
+                            }  
+                            
                         </View>
                     ): (
                         <UserAuth message={'Please login to view your profile'}/>
@@ -180,7 +211,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'green'
     }
 
 })
@@ -189,6 +219,7 @@ const mapStateToProps = state => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
         user: state.auth.user,
+        userPhotos: state.photo.userPhotos,
     };
 };
 

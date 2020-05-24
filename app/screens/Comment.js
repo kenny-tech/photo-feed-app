@@ -132,7 +132,7 @@ class Comment extends React.Component {
                                     <View>
                                         <View style={{marginHorizontal: 10, marginVertical: 10}}>
                                             <Text style={{marginHorizontal: 20, fontWeight: 'bold'}}>{item.comment}</Text>                                    
-                                            <Text style={{marginHorizontal: 20, fontStyle: 'italic', fontSize: 12}}>By: {item.username}, Posted: {this.timeConverter(item.posted)}</Text>
+                                            <Text style={{marginHorizontal: 20, fontStyle: 'italic', fontSize: 10}}>By: {item.username}, Posted: {this.timeConverter(item.posted)}</Text>
                                         </View>
                                     </View>
                                 )}
