@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_PHOTO } from './types';
+import { ADD_PHOTO, FETCH_USER_PHOTOS } from './types';
 
 import { baseurl } from '../../config/config'
 
@@ -12,7 +12,7 @@ export const add_photo = (userId,caption,posted,base64Image,username) => async d
         username: username
     })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         dispatch({
             type: ADD_PHOTO,
             payload: response.data
@@ -22,3 +22,4 @@ export const add_photo = (userId,caption,posted,base64Image,username) => async d
           console.log(error.response);
       })
 }
+

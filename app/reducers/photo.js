@@ -1,4 +1,4 @@
-import { ADD_PHOTO } from "../actions/types";
+import { ADD_PHOTO, FETCH_USER_PHOTOS } from "../actions/types";
   
 export default (state=[], action) => {
     switch(action.type) {
@@ -7,8 +7,8 @@ export default (state=[], action) => {
                 ...state, 
                 response: action.payload,
             }   
-            default:
-                return state;
+        default:
+            return state;
     }
   }
   
