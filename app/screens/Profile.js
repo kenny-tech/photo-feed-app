@@ -26,7 +26,6 @@ class Profile extends React.Component {
         let userId = this.state.userId;
         fetch(baseurl + '/userPhotos/' + userId)
         .then(response => response.json())
-        // .then(response => console.log('photo response: ',response.data))
         .then(response => (this.setState({userPhotos: response.data})))
         .catch(error => console.log(error)) 
     }
