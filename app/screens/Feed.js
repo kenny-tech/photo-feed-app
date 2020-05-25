@@ -16,7 +16,7 @@ const Feed = ({ navigation }) => {
 
     useEffect(() => {
         loadFeed()
-    });
+    }, []);
 
     const pluralCheck = (s) => {
         if(s == 1){
