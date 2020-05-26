@@ -18,10 +18,6 @@ class Auth extends React.Component {
         }
     }
 
-    componentDidMount = () => {
-
-    }
-
     showLogin = () => {
         this.setState({authStep: 1})
     }
