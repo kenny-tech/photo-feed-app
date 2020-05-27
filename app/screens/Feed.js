@@ -1,29 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, Image } from 'react-native';
 
 import { baseurl } from '../../config/config'
 
-class Feed extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            feed: []
-        }
-    }
+const Feed = ({ navigation }) => {
+    const [feed, setFeed] = useState([]);
 
-    loadFeed = () => {
+    const loadFeed = () => {
         fetch(baseurl + '/photos')
         .then(response => response.json())
-        .then(response => (this.setState({feed: response})))
-        .then(response => (console.log('Response: ',this.state.feed)))
+        .then(response => (setFeed(response)))
+        .then(response => (console.log('Response: ',feed)))
         .catch(error => console.log(error))
     }
 
-    componentDidMount = () => {
-        this.loadFeed()
-    }
+    useEffect(() => {
+        loadFeed()
+    }, []);
 
-    pluralCheck = (s) => {
+    const pluralCheck = (s) => {
         if(s == 1){
             return ' ago';
         }else{
@@ -31,7 +26,7 @@ class Feed extends React.Component {
         }
     }
 
-    timeConverter = (timestamp) => {
+    const timeConverter = (timestamp) => {
 
         let a, seconds, interval;
         a = new Date(timestamp * 1000);
@@ -39,67 +34,65 @@ class Feed extends React.Component {
 
         interval = Math.floor(seconds / 31536000);
         if(interval > 1){
-            return interval+ ' year'+this.pluralCheck(interval)
+            return interval+ ' year'+pluralCheck(interval)
         }
 
         interval = Math.floor(seconds / 2592000);
         if(interval > 1){
-            return interval+ ' month'+this.pluralCheck(interval)
+            return interval+ ' month'+pluralCheck(interval)
         }
 
         interval = Math.floor(seconds / 86400);
         if(interval > 1){
-            return interval+ ' day'+this.pluralCheck(interval)
+            return interval+ ' day'+pluralCheck(interval)
         }
 
         interval = Math.floor(seconds / 3600);
         if(interval > 1){
-            return interval+ ' hour'+this.pluralCheck(interval)
+            return interval+ ' hour'+pluralCheck(interval)
         }
 
         interval = Math.floor(seconds / 60);
         if(interval > 1){
-            return interval+ ' minute'+this.pluralCheck(interval)
+            return interval+ ' minute'+pluralCheck(interval)
         }
 
-        return Math.floor(seconds)+ ' second'+this.pluralCheck(seconds)
+        return Math.floor(seconds)+ ' second'+pluralCheck(seconds)
     }
 
-    render() {
-        const { user, feed } = this.state;
-
-        return (
-            <View style={styles.container}>
-                <View style={styles.feedView}>
-                    <Text>Feed</Text>
-                </View>
-                <FlatList
-                    data={feed}
-                    renderItem={({ item }) => (
-                        <View>
-                            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 5}}>
-                                <Text>{this.timeConverter(item.posted)}</Text>
-                                <Text>@{item.username}</Text>
-                            </View>
-                            <Image source={{uri: item.image}} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
-                            <Text style={{marginHorizontal: 20}}>{item.caption}</Text>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.props.navigation.navigate('Comment', {
-                                        photoId: item._id, image: item.image
-                                    });
-                                  }}
-                            >
-                                <Text style={{color: 'blue', marginTop: 10, textAlign: 'center'}}>[ View comments ]</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                    keyExtractor={item => item._id}
-                />
+    return (
+        <View style={styles.container}>
+            <View style={styles.feedView}>
+                <Text>Feed</Text>
             </View>
-        )
-    }
-};
+            <FlatList
+                data={feed}
+                renderItem={({ item }) => (
+                    <View>
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 5}}>
+                            <Text>{timeConverter(item.posted)}</Text>
+                            <Text>@{item.username}</Text>
+                        </View>
+                        <Image source={{uri: item.image}} style={{width: 370, height: 200, marginVertical: 10, marginHorizontal: 20}}/>
+                        <Text style={{marginHorizontal: 20}}>{item.caption}</Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('Comment', {
+                                    photoId: item._id, image: item.image
+                                });
+                              }}
+                        >
+                            <Text style={{color: 'blue', marginTop: 10, textAlign: 'center'}}>[ View comments ]</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+                keyExtractor={item => item._id}
+            />
+        </View>
+    )
+
+}
+
  
 const styles = StyleSheet.create({
     container: {
