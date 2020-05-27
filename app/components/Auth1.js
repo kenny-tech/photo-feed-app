@@ -65,7 +65,7 @@ const Auth = ({ message }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
             <Text>You are not logged in </Text>
             <Text>{message}</Text>
             {
@@ -118,7 +118,6 @@ const Auth = ({ message }) => {
                         </View>
                         ) : (
                             // Sign up
-                            <KeyboardAvoidingView> 
                                 <View>
                                     <TouchableOpacity 
                                         onPress={() => setAuthStep(0)}
@@ -167,12 +166,11 @@ const Auth = ({ message }) => {
                                         <Text style={{color: 'white'}}>Sign Up</Text>
                                     </TouchableOpacity>
                                 </View>
-                            </KeyboardAvoidingView>
                         )
                     }
                 </View>)
             }
-        </View>
+        </KeyboardAvoidingView>
     )
 
 }

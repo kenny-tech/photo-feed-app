@@ -65,7 +65,8 @@ class Auth extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container}
+                behavior="padding">
                 <Text>You are not logged in </Text>
                 <Text>{this.props.message}</Text>
                 {
@@ -118,7 +119,6 @@ class Auth extends React.Component {
                             </View>
                             ) : (
                                 // Sign up
-                                <KeyboardAvoidingView> 
                                     <View>
                                         <TouchableOpacity 
                                             onPress={() => this.setState({authStep: 0})}
@@ -167,12 +167,11 @@ class Auth extends React.Component {
                                             <Text style={{color: 'white'}}>Sign Up</Text>
                                         </TouchableOpacity>
                                     </View>
-                                </KeyboardAvoidingView>
                             )
                         }
                     </View>)
                 }
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 };
