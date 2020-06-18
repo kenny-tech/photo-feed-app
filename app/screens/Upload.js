@@ -14,7 +14,7 @@ const options = {
     },
   };
 
-const Upload = () => {
+const Upload = ({ navigation }) => {
 
     const [imageSource, setImageSource] = useState('');
     const [uploading, setUploading] = useState(true);
@@ -83,11 +83,9 @@ const Upload = () => {
         let timestamp = Math.floor(dateTime / 1000);
         let posted = timestamp;
         let base64Image = 'data:image/jpeg;base64,' + base64Value;
-
-
         dispatch(add_photo(userId,caption,posted,base64Image,username))
-
         Alert.alert('Image Uploaded!!');
+        navigation.navigate('Feed');
 
     }
 
@@ -95,7 +93,6 @@ const Upload = () => {
         if(caption !== '') {
             // upload and publish to the server
             uploadImage(imageSource);
-            // Alert.alert('Upload and publish in progress...');
         } else {
             Alert.alert('Please enter a caption...');
         }     
@@ -109,19 +106,13 @@ const Upload = () => {
     return (
         <View style={styles.container}>
             <View style={styles.profileView}>
-                <TouchableOpacity onPress={() => gobackToUpload()}>
-                    <Text style={{fontSize:12, fontWeight: "bold", paddingLeft: 10}}>Go Back</Text>
-                </TouchableOpacity>
-                <View style={{marginHorizontal: 10}}>
-                    <Text>Upload</Text>
-                </View>
+                <Text style={{fontWeight: 'bold', fontSize: 18}}>Upload</Text>
             </View>
             {
                 isLoggedIn ? 
                 (
                 <View style={styles.container}>
                     { imageSelected ? (<View style={{flex: 1}}><View>
-                        <Text style={{fontSize: 28, paddingBottom: 15, textAlign: 'center'}}>Upload</Text>
                     </View>
                     <View style={{marginHorizontal: 20, paddingHorizontal: 30}}> 
                         <Text style={{margin: 5, textAlign: 'center'}}>Caption: </Text>
@@ -140,7 +131,10 @@ const Upload = () => {
                         style={{alignSelf: 'center', width: 170, marginHorizontal: 'auto', backgroundColor: 'purple', borderRadius: 5, paddingVertical: 10, paddingHorizontal: 20}}>
                             <Text style={{textAlign: 'center', color: 'white'}}>Upload & Publish</Text>
                         </TouchableOpacity>
-                        {
+                        <TouchableOpacity onPress={() => gobackToUpload()} style={{paddingVertical: 10}}>
+                            <Text style={{textAlign: 'center'}}>Cancel</Text>
+                        </TouchableOpacity>
+                        {/* {
                             uploading ? (
                                 <View style={{marginTop: 10}}>
                                     <Text>{progress}%</Text>
@@ -156,7 +150,7 @@ const Upload = () => {
                             ) : (
                                 <View></View>
                             )
-                        }
+                        } */}
                         <Image source={imageSource} style={{marginTop: 10, resizeMode:'cover', width: 300, height: 300}}/>
                         </View>
                     </View>) : (<View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text style={{fontSize: 28, paddingBottom: 15}}>Upload</Text>
@@ -187,8 +181,7 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         backgroundColor: 'white',
         borderColor: 'lightgrey',
-        flexDirection: "row",
-        justifyContent: "space-between"
+        alignItems: 'center'
     },
 })
 

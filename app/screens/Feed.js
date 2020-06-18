@@ -63,7 +63,7 @@ const Feed = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.feedView}>
-                <Text>Feed</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 18}}>Feed</Text>
             </View>
             <FlatList
                 data={feed}

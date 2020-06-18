@@ -62,7 +62,7 @@ class Profile extends React.Component {
                     (
                         <View style={{flex: 1}}>
                             <View style={styles.profileView}>
-                                <Text>Profile</Text>
+                                <Text style={{fontWeight: 'bold', fontSize: 18}}>Profile</Text>
                             </View>
                             <View style={{marginHorizontal: 60, marginVertical: 20}}>
                                 <Text>{this.props.user.data.name}</Text>
