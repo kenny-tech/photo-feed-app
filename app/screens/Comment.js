@@ -111,10 +111,7 @@ class Comment extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.commentView}>
-                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                        <Text style={{fontSize:12, fontWeight: "bold", paddingLeft: 10}}>Go Back</Text>
-                    </TouchableOpacity>
-                    <Text>Comment</Text>
+                    <Text style={{fontWeight: 'bold', fontSize: 18}}>Comment</Text>
                 </View>
                 {
                     comment === undefined || comment.length == 0 ? (
@@ -178,8 +175,7 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         backgroundColor: 'white',
         borderColor: 'lightgrey',
-        flexDirection: "row",
-        justifyContent: "space-between"
+        alignItems: 'center'
     },
     bottom: {
         width: '100%',
