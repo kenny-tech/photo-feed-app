@@ -107,7 +107,7 @@ const Profile = ({ navigation }) => {
                                     <Text style={styles.textUpload}>Upload New +</Text>
                                 </TouchableOpacity>
                             </View>)}
-                            <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>
+                            {/* <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/> */}
                                                        
                         </View>
                         
