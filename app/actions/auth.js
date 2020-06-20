@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGNUP, LOGIN, LOGIN_ERROR, SIGNUP_ERROR, UPDATE_PROFILE } from './types';
+import { SIGNUP, LOGIN, LOGIN_ERROR, SIGNUP_ERROR, UPDATE_PROFILE, LOGOUT } from './types';
 
 import { baseurl } from '../../config/config'
 
@@ -67,4 +67,10 @@ export const updateProfile = (name, username, userId)  => async dispatch => {
         //   payload: error.response.data.message
         // });
     })
+}
+
+export const logout = () => {
+  return {
+    type: LOGOUT
+  }
 }
