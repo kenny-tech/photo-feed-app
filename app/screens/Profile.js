@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import { baseurl } from '../../config/config'
 import { updateProfile } from '../actions/auth';
+import { logout } from '../actions/auth';
 import UserAuth from '../components/Auth'
 
 class Profile extends React.Component {
@@ -49,6 +50,10 @@ class Profile extends React.Component {
             })
             Alert.alert('Profile successfully updated');
         }
+    }
+
+    logoutUser = () => {
+        this.props.logout();
     }
 
     render() {
@@ -97,7 +102,7 @@ class Profile extends React.Component {
                                         <Text style={{fontWeight: 'bold', color: 'white'}}>Save Changes</Text>
                                     </TouchableOpacity>
                                 </View>) : (<View style={styles.buttonView}>   
-                                    <TouchableOpacity style={styles.button} onPress={() => this.logout()}>
+                                    <TouchableOpacity style={styles.button} onPress={() => this.logoutUser()}>
                                         <Text style={styles.buttonText}>Logout</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.button} onPress={() => this.editProfile()}>
@@ -225,6 +230,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => {
     return {
         updateProfile: (name, username, userId) => { dispatch(updateProfile(name, username, userId))},
+        logout: () => { dispatch(logout())},
     }
 }
 

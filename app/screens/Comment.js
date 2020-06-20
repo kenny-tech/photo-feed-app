@@ -1,6 +1,5 @@
-import React, { useImperativeHandle } from 'react';
-import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert, Image } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import React from 'react';
+import { TouchableOpacity, TextInput, KeyboardAvoidingView, StyleSheet, Text, View, Alert, Image, FlatList } from 'react-native';
 import { connect } from 'react-redux'
 
 import UserAuth from '../components/Auth'

@@ -1,73 +1,52 @@
 import React from 'react';
-import { connect } from 'react-redux'
-import { TouchableOpacity, Alert, StyleSheet, Text, View, Image } from 'react-native';
+import {useSelector, useDispatch} from 'react-redux'
+import { TouchableOpacity, StyleSheet, Text, View, Image } from 'react-native';
 
-class UserProfile extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            loaded: false,
-            login: false
-        }
-    }
-    
+import { logout } from '../actions/auth';
 
-    fetchUserInfo = (userId) => {
-        Alert.alert(userId)
+const UserProfile = ({ navigation }) => {
+
+    const user = useSelector(state => state.auth.user)
+
+    const logoutUser = () => {
+        dispatch(logout());
     }
 
-    componentDidMount = () => {
-        this.checkParams()
-    }
-
-    handleLogin = () => {
-        try {
-            this.setState({
-                loggedin: true
-            })
-        }catch(error){
-            console.log(error)
-        }
-    }
-
-    render() {
-        const { loaded } = this.state;
-
-        return (
+    return (
            
-            <View style={styles.container}>     
-                <View style={{flex: 1}}>
-                    <View style={styles.profileView}>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                            <Text style={{fontSize:12, fontWeight: "bold", paddingLeft: 10}}>Go Back</Text>
-                        </TouchableOpacity>
-                        <Text>User Profile</Text>
+        <View style={styles.container}>     
+            <View style={{flex: 1}}>
+                <View style={styles.profileView}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Text style={{fontSize:12, fontWeight: "bold", paddingLeft: 10}}>Go Back</Text>
+                    </TouchableOpacity>
+                    <Text>User Profile</Text>
+                </View>
+                <View style={styles.profileImageTopView}>
+                    <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>
+                    <View style={{marginRight: 5}}>
+                        <Text>{user.data.name}</Text>
+                        <Text>@{user.data.username}</Text>
                     </View>
-                    <View style={styles.profileImageTopView}>
-                        <Image source={{ uri: 'https://api.adorable.io/avatars/285/test@user.i.png'}} style={styles.profileImage}/>
-                        <View style={{marginRight: 5}}>
-                            <Text>{this.props.user.data.name}</Text>
-                            <Text>@{this.props.user.data.username}</Text>
-                        </View>
-                        <View style={styles.buttonView}>
-                            <TouchableOpacity style={styles.button}>
-                                <Text style={styles.buttonText}>Logout</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.button}>
-                                <Text style={styles.buttonText}>Edit Profile</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity 
-                                onPress={() => this.props.navigation.navigate('Upload')}
-                                style={styles.buttonUpload}>
-                                <Text style={styles.textUpload}>Upload New +</Text>
-                            </TouchableOpacity>
-                        </View>
+                    <View style={styles.buttonView}>
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText} onPress={() => logoutUser()}>Logout</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText}>Edit Profile</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            onPress={() => navigation.navigate('Upload')}
+                            style={styles.buttonUpload}>
+                            <Text style={styles.textUpload}>Upload New +</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
-            </View>   
-        )   
-    }
-};
+            </View>
+        </View>   
+    )
+
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -144,12 +123,6 @@ const styles = StyleSheet.create({
 
 })
 
-const mapStateToProps = state => {
-    return {
-        user: state.auth.user,
-    };
-};
-
-export default connect(mapStateToProps, null)(UserProfile);
+export default UserProfile;
 
 
